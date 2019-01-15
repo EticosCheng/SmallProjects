@@ -132,6 +132,11 @@ public class BackupU {
 		beginButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String MfilePath=newFile(MText.getText(),filePath);
+					File yPath=new File(YText.getText());	//判断备份自目录是否存在
+					if(!yPath.exists()) {
+						JOptionPane.showMessageDialog(null, "失败：备份自目录不存在！\n","U盘备份     JAVA v2.0",0);
+						System.exit(0);
+					}
 					if(filePath[2].equals("0")) {
 						JOptionPane.showMessageDialog(null, "失败：备份文件夹已存在！\n"+MfilePath,"U盘备份     JAVA v2.0",0);
 						openFile(MText.getText());
