@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 此程序通过默认路径对文件目录进行备份，修改默认代码在主函数中filePath数组进行修改。
 备份的保存地点按照当天的日期命名（YY.MM.DD）。
 导出为.jar之后就不能改默认的了，修改路径可以通过文本框改。备份完成之后还会打开备份完成文件夹。
+在jdk1.8版本测试通过，之前的就不知道了。
 */
 
 public class BackupU {
