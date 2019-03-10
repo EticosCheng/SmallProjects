@@ -1,0 +1,128 @@
+package com.验证码;
+
+import java.applet.Applet;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Label;
+import java.awt.TextArea;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
+import java.util.Random;
+
+public class 验证码主程序  extends Applet implements ActionListener,TextListener{
+	
+	static Color BGP=new Color(192,192,192);
+	static Color F=new Color(0,0,0);
+	static Font zi=new Font("黑体",Font.ITALIC+Font.BOLD,50);
+	static Font zi2=new Font("黑体",Font.PLAIN,12);
+	Label lab1,lab2;
+	TextField tex;
+	Button but1,but2;
+	static String rstr="";
+	FlowLayout f1=new FlowLayout(FlowLayout.LEFT,0,68);
+	int b=0;
+	
+	public static void bgp(Graphics g) {	//此方法实现绘制矩形背景
+		//g.drawRect(x, y, width, height);
+		g.drawRect(19, 9, 151, 56);
+		g.setColor(BGP);
+		g.fillRect(20, 10, 150, 55);
+	}
+
+	public static void dianD(Graphics g,Color dian) {	//此方法生成背景上的点点
+		int x=0,y=0;
+		g.setColor(dian);
+		for(int i=0;i<250;i++) {
+			g.setColor(dian);
+			x=(int)(Math.random()*10000)%141+25;
+			y=(int)(Math.random()*10000)%50+9;
+			g.fillOval(x, y, 5, 5);
+		}
+	}
+	
+	public static void yzm(Graphics g) {	//此方法实现随机数字或字母
+		String[] ch= {"1","2","3","4","5","6","7","8","9",
+				"A","B","C","D","E","F","G","H","I","J","K","L",
+				"M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+		int n=0,x1=40;
+		for(int i=0;i<4;i++) {
+			n=(int)(Math.random()*1000)%35;
+			g.setFont(zi);
+			g.drawString(ch[n], x1, 55);
+			x1+=30;
+			rstr+=ch[n];
+		}
+		x1=40;
+	}
+	
+	public void paint(Graphics g) {
+		rstr="";
+		int R=(int)(Math.random()*10000)%255;
+		int G=(int)(Math.random()*10000)%255;
+		int B=(int)(Math.random()*10000)%255;
+		Color dian=new Color(R,G,B);
+		resize(220,150);
+		bgp(g);
+		dianD(g,dian);
+		yzm(g);
+		g.setFont(zi2);
+		g.drawString("区分大小写哦！", 5, 130);
+		g.setColor(F);
+		if(b==0) 
+			g.drawString("", 5, 105);
+		else if(b==1)
+			g.drawString("输入正确 O！", 5, 105);
+		else if(b==-1)
+			g.drawString("输入错误 X！", 5, 105);
+	}
+	
+	public void init() {
+		lab1=new Label("请输入：");
+		lab2=new Label(" ");
+		tex=new TextField(4);
+		but1=new Button("刷新");
+		but2=new Button("确定");
+		setLayout(f1);
+		add(lab1);
+		add(tex);
+		add(but2);
+		add(but1);
+		add(lab2);
+		but2.addActionListener(this);
+		but1.addActionListener(this);
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+        Button button=(Button)e.getSource();
+        //首先要得到事件源对象,因getSource()返回的是Object,需强制转换为Button
+        String actionCommand=button.getActionCommand();
+        /**
+         * Button的getLabel()方法得到是按纽上的文字,有可能两个按纽的文本会一样,如本例
+         * Button的getName()得到的是按纽的name,这个name值是由系统命名的,第1个Button的name是button0
+         * 最好使用getActionCommand()方法进行区分处理
+         */
+        //Graphics g = null;
+        if(actionCommand.equals("刷新")) b=0;
+        else if(actionCommand.equals("确定")){
+        	if(tex.getText().equals(rstr)) 
+        		b=1;
+        	else 
+        		b=-1;
+        }
+        resize(221,151);
+    	tex.setText("");
+    }
+
+	@Override
+	public void textValueChanged(TextEvent e) {
+		// TODO 自动生成的方法存根
+		
+	}
+}
